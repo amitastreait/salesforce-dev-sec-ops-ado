@@ -13,14 +13,14 @@ stages:
         steps:
           - script: echo build Job 
             displayName: Print Information
-          - script: npm install 
-            displayName: Install npm
           - script: |
               echo Add other tasks to build, test, and deploy your project.
               echo See https://aka.ms/yaml
           - script: |
               npm install @salesforce/cli --global
               sf --version
+          - checkout: self
+            fetchDepth: 0
   - stage: deploy
     jobs:
       - job: deployJob
