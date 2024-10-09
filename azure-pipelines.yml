@@ -1,7 +1,4 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Add steps that build, run tests, deploy, and more: https://aka.ms/yaml
 
 trigger:
 - feature/*
@@ -9,11 +6,40 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  - stage: build
+    jobs:
+      - job: buildJob
+        steps:
+          - script: echo build Job 
+            displayName: Print Information
+          - script: npm install 
+            displayName: Install npm
+          - script: |
+              echo Add other tasks to build, test, and deploy your project.
+              echo See https://aka.ms/yaml
+          - script: |
+              npm install @salesforce/cli --global
+              sf --version
+  - stage: deploy
+    jobs:
+      - job: deployJob
+        steps:
+          - script: echo Hello, world!
+            displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+          - script: |
+              echo Add other tasks to build, test, and deploy your project.
+              echo See https://aka.ms/yaml
+            displayName: 'Run a multi-line script'
+  - stage: test
+    jobs:
+      - job: testJob
+        steps:
+          - script: echo Hello, world!
+            displayName: 'Run a one-line script'
+
+          - script: |
+              echo Add other tasks to build, test, and deploy your project.
+              echo See https://aka.ms/yaml
+            displayName: 'Run a multi-line script'
