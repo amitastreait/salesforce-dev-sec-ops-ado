@@ -55,6 +55,18 @@ stages:
               sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html
             displayName: Run SF CLI Scan Report 
 
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)
+              ArtifactName: drop
+            displayName: Publish Build Artifacts
+              
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(System.DefaultWorkingDirectory)/reports
+              artifact: SF_CLI_SCAN_REPORT
+            displayName: Publish SF CLI Scan Report
+
           ## Authenticate with Salesforce
               ### .key file
           ## Run Test Coverage for existing Classes
