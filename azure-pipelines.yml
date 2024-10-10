@@ -40,7 +40,7 @@ stages:
             inputs:
               secureFile: 'server_uat.key'
 
-          - script: sf org login jwt --username $(SF_USERNAME) --jwt-key-file $(commonsecureFile.sourceFilePath) --client-id $(SF_CLIENT_ID) --set-default --alias ci-org --instance-url $(SF_LOGIN_URL)
+          - script: sf org login jwt --username $(SF_USERNAME) --jwt-key-file $(commonsecureFile.secureFilePath) --client-id $(SF_CLIENT_ID) --set-default --alias ci-org --instance-url $(SF_LOGIN_URL)
             displayName: Authenticate with Salesforce 
 
           - script: sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
