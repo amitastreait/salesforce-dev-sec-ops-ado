@@ -72,6 +72,39 @@ stages:
               artifact: SF_CLI_SCAN_REPORT
             displayName: Publish SF CLI Scan Report
 
+          - script: echo 'y' | sf plugins install sfdx-git-delta
+            displayName: Install SFDX GIT Delta 
+
+          - script: |
+              mkdir delta
+              sf sgd source delta --to "HEAD" --from "HEAD~1" --output "./delta" --generate-delta --ignore-whitespace --ignore .sgdignore
+              echo "--- package.xml generated with added and modified metadata ---"
+              cat delta/package/package.xml
+              echo "--- destructiveChanges.xml ---"
+              cat delta/destructiveChanges/destructiveChanges.xml
+            displayName: Generate the Delata for deployment
+
+          ## Check if there are destructive changes --> Deploy
+          ## Check if there are added/modified changes --> deploy
+
+          - script: |
+              if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
+                echo "---- Deploying with Pre Destructive Changes  ----"
+                sf project deploy start --target-org ci-org --manifest delta/destructiveChanges/package.xml --pre-destructive-changes "delta/destructiveChanges/destructiveChanges.xml"
+              else
+                echo "---- No Destructive Changes changes to deploy before deployment ----"
+              fi 
+            displayName: Deploy the Destructive Changes
+
+          - script: |
+              if grep -q '<types>' delta/package/package.xml ; then
+                echo "---- validating added and modified metadata ----"
+                sf project deploy validate --source-dir delta/force-app --target-org ci-org --wait 10
+              else
+                echo "---- No changes to validate ----"
+              fi
+            displayName: Deploy the Changes
+
           ## Authenticate with Salesforce
               ### .key file
           ## Run Test Coverage for existing Classes
