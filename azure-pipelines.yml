@@ -50,6 +50,12 @@ stages:
 
           - script: sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
             displayName: Run the Existing Test Cases
+
+          - task: PythonScript@0
+            inputs:
+              scriptSource: 'filePath'
+              scriptPath: 'CODE_COVERAGE.py'
+            displayName: Run Code Coverage Check
           
           - script: |
               sf plugins install @salesforce/sfdx-scanner
