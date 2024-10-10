@@ -6,6 +6,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables: 
+  - group: salesforce-dev-org
+
 stages:
   - stage: build
     jobs:
@@ -16,11 +19,54 @@ stages:
           - script: |
               echo Add other tasks to build, test, and deploy your project.
               echo See https://aka.ms/yaml
+            displayName: multi-line commands
           - script: |
               npm install @salesforce/cli --global
               sf --version
+            displayName: Install Salesforce CLI
           - checkout: self
             fetchDepth: 0
+            displayName: Checkout to the correct commit
+          
+          - script: |
+              echo $(SF_CLIENT_ID)
+              echo $(SF_LOGIN_URL)
+              echo $(SF_USERNAME)
+            displayName: Print Variables & Secrets
+
+          - task: DownloadSecureFile@1
+            name: commonsecureFile
+            displayName: Download the OPEN SSL Certificate Key file
+            inputs:
+              secureFile: 'server_uat.key'
+
+          - script: sf org login jwt --username $(SF_USERNAME) --jwt-key-file $(commonsecureFile.sourceFilePath) --client-id $(SF_CLIENT_ID) --set-default --alias ci-org --instance-url $(SF_LOGIN_URL)
+            displayName: Authenticate with Salesforce 
+
+          - script: sf apex run test --target-org ci-org --test-level RunLocalTests --code-coverage --result-format human -d ./ --wait 10
+            displayName: Run the Existing Test Cases
+          
+          - script: |
+              sf plugins install @salesforce/sfdx-scanner
+            displayName: Install SF CLI Scanner
+
+          - script: |
+              mkdir reports
+              sf scanner run --format html --target force-app/main/default/classes --engine pmd,pmd-appexchange --category Design,Best Practices, Code Style,Performance,Security,Documentation, Error Prone --outfile reports/scan-reports.html
+            displayName: Run SF CLI Scan Report 
+
+          ## Authenticate with Salesforce
+              ### .key file
+          ## Run Test Coverage for existing Classes
+             ## Run the python script
+          ## Run Salesforce CLI Scanner
+          ## Sonar scan
+          ## upload the code codecov
+          ## delta steps
+          ## Validate The changes
+          ## Deploy the change
+
+
   - stage: deploy
     jobs:
       - job: deployJob
