@@ -89,7 +89,7 @@ jobs:
       - script: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
             echo "---- Deploying with Pre Destructive Changes  ----"
-            sf project deploy start --target-org ci-org --manifest delta/destructiveChanges/package.xml --pre-destructive-changes "delta/destructiveChanges/destructiveChanges.xml"
+            sf project deploy start --target-org ci-org --manifest delta/destructiveChanges/package.xml --pre-destructive-changes "delta/destructiveChanges/destructiveChanges.xml" --dry-run
           else
             echo "---- No Destructive Changes changes to deploy before deployment ----"
           fi 
@@ -98,8 +98,17 @@ jobs:
       - script: |
           if grep -q '<types>' delta/package/package.xml ; then
             echo "---- validating added and modified metadata ----"
-            sf project deploy validate --source-dir delta/force-app --target-org ci-org --wait 10
+            sf project deploy start --source-dir delta/force-app --target-org ci-org --wait 10 --dry-run
           else
             echo "---- No changes to validate ----"
           fi
         displayName: Deploy the Changes
+
+      - script: |
+          if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
+            echo "---- validating added and modified metadata ----"
+            sf project deploy start --target-org ci-org --manifest destructiveChanges/package.xml --pre-destructive-changes "destructiveChanges/postDestructiveChanges.xml" --dry-run
+          else
+            echo "---- No changes to validate ----"
+          fi
+        displayName: Deploy the Post destructiveChanges
