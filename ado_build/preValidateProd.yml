@@ -1,0 +1,30 @@
+## Only when the PR is raised
+
+# Add steps that build, run tests, deploy, and more: https://aka.ms/yaml
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables: 
+  - group: salesforce-prod-org
+
+pr:
+  branches: 
+    include:
+    - uat
+  paths:
+    include:
+      - force-app/*
+
+stages:
+  - stage: SF_UAT_BUILD
+    jobs:
+      - job: 
+      - template: ../ado_pipeline/build-deploy.yml
+        parameters:
+            SF_CLIENT_ID: $(SF_CLIENT_ID)
+            SF_USERNAME:  $(SF_USERNAME)
+            SF_LOGIN_URL: $(SF_LOGIN_URL)
+            SECURE_FILE_NAME:  'server_prod.key'
