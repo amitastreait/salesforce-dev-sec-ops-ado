@@ -1,0 +1,9 @@
+# Github Actions
+.github/
+.github/workflow
+
+# Anynomous Files
+/scripts
+/pipeline
+/manifest
+/config
