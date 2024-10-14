@@ -1,0 +1,14 @@
+parameters:
+- name: SF_CLIENT_ID
+  type: string 
+- name: SF_USERNAME
+  type: string
+- name: SF_LOGIN_URL
+  type: string
+- name: SECURE_FILE_NAME
+  type: string
+
+jobs:
+- job:
+  steps:
+    - script: echo reusable job

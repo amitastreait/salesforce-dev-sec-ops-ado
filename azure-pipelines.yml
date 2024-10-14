@@ -15,6 +15,16 @@ variables:
   - group: salesforce-dev-org
 
 stages:
+  - stage: SFBuild
+    jobs:
+      - job: SFBuildJob
+      - template: ../pipeline/build-deploy.yml
+        parameters:
+          SF_CLIENT_ID: $(SF_CLIENT_ID)
+          SF_USERNAME:  $(SF_USERNAME)
+          SF_LOGIN_URL: $(SF_LOGIN_URL)
+          SECURE_FILE_NAME:  'server_uat.key'
+
   - stage: build
     jobs:
       - job: buildJob
@@ -121,7 +131,6 @@ stages:
           ## delta steps
           ## Validate The changes
           ## Deploy the change
-
 
   - stage: deploy
     jobs:
