@@ -36,7 +36,7 @@ jobs:
         name: commonsecureFile
         displayName: Download the OPEN SSL Certificate Key file
         inputs:
-          secureFile: $(SECURE_FILE_NAME)
+          secureFile: ${{ parameters.SECURE_FILE_NAME }}
 
       - script: sf org login jwt --username $(SF_USERNAME) --jwt-key-file $(commonsecureFile.secureFilePath) --client-id $(SF_CLIENT_ID) --set-default --alias ci-org --instance-url $(SF_LOGIN_URL)
         displayName: Authenticate with Salesforce 
