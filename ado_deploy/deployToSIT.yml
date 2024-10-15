@@ -1,0 +1,31 @@
+## Only when the PR is Merged
+  ### When a PR is merged
+    #### A Push Event or a Commit is done on the target branch
+# Add steps that build, run tests, deploy, and more: https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - sit
+      - SIT
+  paths:
+    include:
+      - force-app/*
+
+pool:
+  vmImage: ubuntu-latest
+
+variables: 
+  - group: salesforce-uat-org ## Replace it with the correct group name
+
+stages:
+  - stage: SF_SIT_BUILD
+    jobs:
+      - job: 
+      - template: ../ado_pipeline/template.yml
+        parameters:
+            SF_CLIENT_ID: $(SF_CLIENT_ID)
+            SF_USERNAME:  $(SF_USERNAME)
+            SF_LOGIN_URL: $(SF_LOGIN_URL)
+            SECURE_FILE_NAME:  'server_uat.key' ## Replace it with the correct file name
+            PR_MERGED: true

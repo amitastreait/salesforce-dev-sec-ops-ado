@@ -1,12 +1,13 @@
 # Add steps that build, run tests, deploy, and more: https://aka.ms/yaml
 
-trigger:
-  branches:
-    include:
-      - feature/*
-  paths:
-    include:
-      - force-app/*
+trigger: none
+#trigger:
+#  branches:
+#    include:
+#      - feature/*
+#  paths:
+#    include:
+#      - force-app/*
 
 pool:
   vmImage: ubuntu-latest
