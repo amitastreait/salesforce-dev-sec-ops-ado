@@ -13,7 +13,8 @@ variables:
 pr:
   branches: 
     include:
-    - uat
+    - sit
+    - SIT
   paths:
     include:
       - force-app/*
