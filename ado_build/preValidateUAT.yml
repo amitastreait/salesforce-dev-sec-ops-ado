@@ -17,6 +17,7 @@ pr:
   paths:
     include:
       - force-app/*
+  
 
 stages:
   - stage: SF_UAT_BUILD
