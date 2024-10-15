@@ -107,7 +107,7 @@ jobs:
           else
             echo "---- No Destructive Changes changes to deploy before deployment ----"
           fi 
-        displayName: Deploy the Destructive Changes
+        displayName: Validate the Destructive Changes
         condition: eq('${{ parameters.PR_MERGED }}', 'false')
         
       - script: |
@@ -127,7 +127,7 @@ jobs:
           else
             echo "---- No changes to validate ----"
           fi
-        displayName: Deploy the Changes
+        displayName: Validate the Changes
         condition: eq('${{ parameters.PR_MERGED }}', 'false')
 
       - script: |
@@ -137,7 +137,7 @@ jobs:
           else
             echo "---- No changes to validate ----"
           fi
-        displayName: Deploy the Post destructiveChanges
+        displayName: Validate the Post destructiveChanges
         condition: eq('${{ parameters.PR_MERGED }}', 'false')
 
       - script: |
@@ -147,5 +147,5 @@ jobs:
           else
             echo "---- No changes to validate ----"
           fi
-        displayName: Deploy the Post destructiveChanges
+        displayName: Validate the Post destructiveChanges
         condition: eq('${{ parameters.PR_MERGED }}', 'true')
