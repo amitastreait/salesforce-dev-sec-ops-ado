@@ -98,7 +98,7 @@ jobs:
             echo "---- No Destructive Changes changes to deploy before deployment ----"
           fi 
         displayName: Deploy the Destructive Changes
-        condition: ${{ if eq(parameters.PR_MERGED, true) }}
+        condition: ${{ if eq(parameters.PR_MERGED, 'true') }}
 
       - script: |
           if grep -q '<types>' delta/destructiveChanges/destructiveChanges.xml ; then
@@ -108,7 +108,7 @@ jobs:
             echo "---- No Destructive Changes changes to deploy before deployment ----"
           fi 
         displayName: Deploy the Destructive Changes
-        condition: ${{ if eq(parameters.PR_MERGED, false) }}
+        condition: ${{ if eq(parameters.PR_MERGED, 'false') }}
         
       - script: |
           if grep -q '<types>' delta/package/package.xml ; then
@@ -118,7 +118,7 @@ jobs:
             echo "---- No changes to validate ----"
           fi
         displayName: Deploy the Changes
-        condition: ${{ if eq(parameters.PR_MERGED, true) }}
+        condition: ${{ if eq(parameters.PR_MERGED, 'true') }}
 
       - script: |
           if grep -q '<types>' delta/package/package.xml ; then
@@ -128,7 +128,7 @@ jobs:
             echo "---- No changes to validate ----"
           fi
         displayName: Deploy the Changes
-        condition: ${{ if eq(parameters.PR_MERGED, false) }}
+        condition: ${{ if eq(parameters.PR_MERGED, 'false') }}
 
       - script: |
           if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
@@ -138,7 +138,7 @@ jobs:
             echo "---- No changes to validate ----"
           fi
         displayName: Deploy the Post destructiveChanges
-        condition: ${{ if eq(parameters.PR_MERGED, false) }}
+        condition: ${{ if eq(parameters.PR_MERGED, 'false') }}
 
       - script: |
           if grep -q '<types>' destructiveChanges/postDestructiveChanges.xml ; then
@@ -148,4 +148,4 @@ jobs:
             echo "---- No changes to validate ----"
           fi
         displayName: Deploy the Post destructiveChanges
-        condition: ${{ if eq(parameters.PR_MERGED, true) }}
+        condition: ${{ if eq(parameters.PR_MERGED, 'true') }}
